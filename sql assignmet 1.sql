@@ -1,36 +1,6 @@
--- Create the database
 CREATE DATABASE HumanitarianProgramDB;
 
--- Use the database
 USE HumanitarianProgramDB;
-
-create table  jurisdiction_hierarchy(
-ID INT  PRIMARY KEY AUTO_INCREMENT,
-jname varchar(30) unique not null,
-jlevel varchar(20) not null check (jlevel IN ('County','Sub-County','Village')),
-parent VARCHAR(30) NULL, FOREIGN KEY(parent) REFERENCES jurisdiction_hierarchy(jname) ON DELETE CASCADE
-);
-
-create table village_locations(
-village_id INT primary key auto_increment,
-village varchar(30) not null unique, foreign key(village) references jurisdiction_hierachy(jname) on delete cascade,
-total_population int not null check(total_population>=0)
-);
-
-create table beneficiary_partner_data(
-patner_id int primary key auto_increment,
-patner varchar(30) not null, 
-village varchar(30) not null, foreign key (village) references village_locations(village) on delete cascade,
-beneficiaries int not null, check (beneficiaries >= 0),
-beneficiary_type varchar(30) not null, check (beneficiary_type IN ('individuals', 'Households'))
-);
-
-USE HumanitarianProgramDB;
-
--- Drop in reverse dependency order if re-running
-DROP TABLE IF EXISTS beneficiary_partner_data;
-DROP TABLE IF EXISTS village_locations;
-DROP TABLE IF EXISTS jurisdiction_hierarchy;
 
 CREATE TABLE jurisdiction_hierarchy (
   ID INT PRIMARY KEY AUTO_INCREMENT,
@@ -57,26 +27,26 @@ CREATE TABLE beneficiary_partner_data (
 );
 
 INSERT INTO jurisdiction_hierarchy (id, jname, jlevel, parent) VALUES
-(1,  'Nairobi',        'County',      NULL),
-(2,  'Kiambu',         'County',      NULL),
-(3,  'Mombasa',        'County',      NULL),
-(4,  'Westlands',      'Sub-County',  'Nairobi'),
-(5,  'Kasarani',       'Sub-County',  'Nairobi'),
-(6,  'Lari',           'Sub-County',  'Kiambu'),
-(7,  'Gatundu South',  'Sub-County',  'Kiambu'),
-(8,  'Kisauni',        'Sub-County',  'Mombasa'),
-(9,  'Likoni',         'Sub-County',  'Mombasa'),
-(10, 'Parklands',      'Village',     'Westlands'),
-(11, 'Kangemi',        'Village',     'Westlands'),
-(12, 'Roysambu',       'Village',     'Kasarani'),
-(13, 'Githurai',       'Village',     'Kasarani'),
-(14, 'Kiamwangi',      'Village',     'Lari'),
-(15, 'Lari Town',      'Village',     'Lari'),
-(16, 'Kamwangi',       'Village',     'Gatundu South'),
-(17, 'Kisauni Town',   'Village',     'Kisauni'),
-(18, 'Mtopanga',       'Village',     'Kisauni'),
-(19, 'Likoni Town',    'Village',     'Likoni'),
-(20, 'Shika Adabu',    'Village',     'Likoni');
+(1,  'Nairobi',  'County', NULL),
+(2,  'Kiambu', 'County', NULL),
+(3,  'Mombasa', 'County',NULL),
+(4,  'Westlands', 'Sub-County', 'Nairobi'),
+(5,  'Kasarani', 'Sub-County','Nairobi'),
+(6,  'Lari', 'Sub-County','Kiambu'),
+(7,  'Gatundu South', 'Sub-County','Kiambu'),
+(8,  'Kisauni', 'Sub-County','Mombasa'),
+(9,  'Likoni', 'Sub-County',  'Mombasa'),
+(10, 'Parklands', 'Village', 'Westlands'),
+(11, 'Kangemi', 'Village','Westlands'),
+(12, 'Roysambu', 'Village','Kasarani'),
+(13, 'Githurai', 'Village','Kasarani'),
+(14, 'Kiamwangi', 'Village','Lari'),
+(15, 'Lari Town', 'Village','Lari'),
+(16, 'Kamwangi',  'Village','Gatundu South'),
+(17, 'Kisauni Town', 'Village','Kisauni'),
+(18, 'Mtopanga',  'Village','Kisauni'),
+(19, 'Likoni Town',  'Village','Likoni'),
+(20, 'Shika Adabu',  'Village','Likoni');
 
 insert into village_locations (village_id, village, total_population) values
 (1, 'Parklands', 15000),
